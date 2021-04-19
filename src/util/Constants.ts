@@ -1,3 +1,5 @@
+import { Snowflake } from './Snowflake';
+
 export enum Constants {
     GATEWAY = 'wss://gateway.discord.gg/?v=6&encoding=json',
     ENDPOINT = 'https://discord.com/api/v8'
@@ -11,6 +13,105 @@ export class Codes {
     4013: 'INVALID_INTENTS';
     4014: 'DISALLOWED_INTENTS';
 };
+
+/**
+ * Types for Interaction
+ * Docs: { @link https://discord.com/developers/docs/interactions/slash-commands#interaction-interactiontype }
+ */
+export enum InteractionType {
+    PING = 1,
+    APPLICATION_COMMAND = 2
+}
+
+/**
+ * Types for Interaction response
+ * Docs: { @link https://discord.com/developers/docs/interactions/slash-commands#interaction-response-interactionresponsetype }
+ */
+export enum InteractionResponseType {
+    PONG = 1,
+    ACKNOWLEDGE = 2,
+    CHANNEL_MESSAGE = 3,
+    CHANNEL_MESSAGE_WITH_SOURCE = 4,
+    DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE = 5
+}
+
+/**
+ * Types for application command options.
+ * Docs: { @link https://discord.com/developers/docs/interactions/slash-commands#applicationcommandoptiontype }
+ */
+export enum ApplicationCommandOptionType {
+    SUB_COMMAND = 1,
+    SUB_COMMAND_GROUP = 2,
+    STRING = 3,
+    INTEGER = 4,
+    BOOLEAN = 5,
+    USER = 6,
+    CHANNEL = 7,
+    ROLE = 8
+}
+
+/**
+ * Application command
+ * Docs: { @link https://discord.com/developers/docs/interactions/slash-commands#applicationcommand }
+ * Fields marked with `?` are optional
+ */
+export interface ApplicationCommand {
+    id: Snowflake,
+    application_id: Snowflake,
+    name: string,
+    description: string,
+    options?: ApplicationCommandOption[],
+    default_permission?: boolean
+}
+
+/**
+ * Options for application commands
+ * Docs: { @link https://discord.com/developers/docs/interactions/slash-commands#applicationcommandoption }
+ * Fields marked with `?` are optional
+ */
+export interface ApplicationCommandOption {
+    type: ApplicationCommandOptionType,
+    name: string,
+    description: string,
+    required?: boolean,
+    choices?: ApplicationCommandOptionChoice[],
+    options?: ApplicationCommandOption[],
+}
+
+/**
+ * Choices for appplication commands.
+ * Docs: { @link https://discord.com/developers/docs/interactions/slash-commands#applicationcommandoptionchoice }
+ */
+export interface ApplicationCommandOptionChoice {
+    name: string,
+    value: string | number
+}
+
+/**
+ * Returned when fetch the permissions for a command in a guild
+ * Docs: { @link https://discord.com/developers/docs/interactions/slash-commands#guildapplicationcommandpermissions }
+ */
+export interface GuildApplicationCommandPermissions {
+    id: Snowflake,
+    application_id: Snowflake,
+    guild_id: Snowflake,
+    permissions: ApplicationCommandPermissions[]
+}
+
+/**
+ * Permissions for application commands
+ * Docs: { @link https://discord.com/developers/docs/interactions/slash-commands#applicationcommandpermissions }
+ */
+export interface ApplicationCommandPermissions {
+    id: Snowflake,
+    type: ApplicationCommandPermissionType,
+    permission: boolean
+}
+
+export enum ApplicationCommandPermissionType {
+    ROLE = 1,
+    USER = 2
+}
 
 export enum VoiceStatus {
     IDENTIFY = 0,
